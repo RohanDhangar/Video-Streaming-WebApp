@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/lib/db";
+import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
 import { request } from "http";
 import { NextRequest, NextResponse } from "next/server";
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(
             { message: "User successfully created" },
-            { status: 400 }
+            { status: 201 }
         );
 
     } catch (error) {

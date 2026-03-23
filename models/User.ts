@@ -1,7 +1,7 @@
-import mongoose, {Schema, models, model} from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-export interface IUser{
+export interface IUser {
     email: string;
     password: string;
     _id?: mongoose.Types.ObjectId;
@@ -11,16 +11,15 @@ export interface IUser{
 
 const userSchema = new Schema<IUser>({
 
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true}
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 
-}, {timestamps: true});
+}, { timestamps: true });
 
-userSchema.pre('save', async function(next){
-    if(this.isModified("password")){
+userSchema.pre('save', async function () {
+    if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 10);
     }
-    next();
 })
 
 const User = models?.User || model<IUser>("User", userSchema);

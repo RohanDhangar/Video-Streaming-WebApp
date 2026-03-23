@@ -1,42 +1,36 @@
 import mongoose from "mongoose";
 
-const MONGODB_URL = process.env.MONGODB_URL!
+const MONGODB_URL = process.env.MONGODB_URL!;
+
+// console.log("Mongo URL:", process.env.MONGODB_URL)
 
 if (!MONGODB_URL) {
-    throw new Error("Define the mongo db  URL in env variables");
+    throw new Error('Please define the MONGODB_URL environment variable');
 }
 
-let cached = global.mongoose;
+interface mongooseCache {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+}
+
+let cached: mongooseCache = global.mongoose;
 
 if (!cached) {
-    cached = global.mongoose = { conn: null, promise: null }
+    cached = global.mongoose = { conn: null, promise: null };
 }
 
-export async function connectToDatabase() {
+async function dbConnect() {
+
     if (cached.conn) {
         return cached.conn;
     }
 
     if (!cached.promise) {
-
-        const opts = {
-            bufferCommands: true,
-            maxPoolSize: 10
-        };
-
-        mongoose
-            .connect(MONGODB_URL, opts)
-            .then(() => mongoose.connection) // here we forgot to assign the cached.promise to this so it needs to be checked be later
+        cached.promise = await mongoose.connect(MONGODB_URL);
     }
 
-    try {
-        cached.conn = await cached.promise;
-    }
-    catch (error) {
-        cached.promise = null;
-        return error;
-    }
-
+    cached.conn = await cached.promise;
     return cached.conn;
-
 }
+
+export default dbConnect;
