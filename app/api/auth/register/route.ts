@@ -1,6 +1,6 @@
 import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
-import { request } from "http";
+// import { request } from "http";
 import { NextRequest, NextResponse } from "next/server";
 
 // Algorithm to register rhe user 
