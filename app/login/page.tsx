@@ -18,7 +18,7 @@ function LoginPage() {
     });
 
     if (result?.error) {
-      console.log(result.error);
+      alert(result.error);
     } else {
       router.push("/");
     }

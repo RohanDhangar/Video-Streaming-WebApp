@@ -10,6 +10,8 @@ export async function GET() {
             // token: "random-token", // Optional, a unique token for request
         })
 
+        // console.log(authenticationParams);
+
         return Response.json({ authenticationParams, publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY })
     }
     catch (error) {

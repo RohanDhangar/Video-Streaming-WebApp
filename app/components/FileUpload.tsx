@@ -40,13 +40,20 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
 
     try {
       const authRes = await fetch("/api/auth/imagekit-auth");
+      //console.log(authRes);
       const auth = await authRes.json();
+      // console.log(auth);
+
+      // console.log("expire:", auth.authenticationParams.expire);
+      // console.log("token:", auth.authenticationParams.token)
+      // console.log("singature:", auth.authenticationParams.signature);
+      // console.log("publicKey:", process.env.NEXT_PUBLIC_PUBLIC_KEY!);
 
       const res = await upload({
         // Authentication parameters
-        expire: auth.expire,
-        token: auth.token,
-        signature: auth.signature,
+        expire: auth.authenticationParams.expire,
+        token: auth.authenticationParams.token,
+        signature: auth.authenticationParams.signature,
         publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY!,
         file,
         fileName: file.name,
@@ -57,10 +64,10 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
           }
         },
       });
-
+      console.log(res);
       onSuccess(res);
     } catch (error) {
-      console.error("Upload failed", error);
+      alert(error);
     } finally {
       setUploading(false);
     }
