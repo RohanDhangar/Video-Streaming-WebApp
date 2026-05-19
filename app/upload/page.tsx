@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import FileUpload from "../components/FileUpload";
 import { useSession } from "next-auth/react";
+import { UploadResponse } from "@imagekit/next";
 
-function uploadMedia() {
+function UploadMedia() {
   const [thumbnailURL, setThumbnailURL] = useState("");
   const [videoURL, setvideoURL] = useState("");
   const [title, setTitle] = useState("");
@@ -177,7 +178,7 @@ function uploadMedia() {
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <FileUpload onSuccess={(res) => setThumbnailURL(res.url)} />
+                  <FileUpload onSuccess={(res: UploadResponse) => setThumbnailURL(res.url!)} />
                 </div>
                 {thumbnailURL && (
                   <svg
@@ -219,7 +220,7 @@ function uploadMedia() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <FileUpload
-                    onSuccess={(res) => setvideoURL(res.url)}
+                    onSuccess={(res: UploadResponse) => setvideoURL(res.url!)}
                     fileType="video"
                   />
                 </div>
@@ -313,4 +314,4 @@ function uploadMedia() {
   }
 }
 
-export default uploadMedia;
+export default UploadMedia;

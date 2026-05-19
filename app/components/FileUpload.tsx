@@ -1,10 +1,10 @@
 "use client"; // This component must be a client component
 
-import { upload } from "@imagekit/next";
-import React, { useRef, useState } from "react";
+import { upload, UploadResponse } from "@imagekit/next";
+import React, { useState } from "react";
 
 interface FileUploadProps {
-  onSuccess: (res: any) => void;
+  onSuccess: (res: UploadResponse) => void;
   onProgress?: (progress: number) => void;
   fileType?: "image" | "video";
 }
@@ -24,6 +24,7 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
     }
     if (file.size > 100 * 1024 * 1024) {
       setError("File size must be less than 100 MB");
+      return false;
     }
 
     return true;
